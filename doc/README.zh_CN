@@ -1,0 +1,8 @@
+设置vc6项目路径
+1. 点击Tools -> Options，如图vc6_option.png
+2. 添加GDIPlus的Includes，如图vc6_include.png
+3. 添加GDIPlus的Libs，如图vc6_lib.png
+
+注册Ocx控件
+1. 编译成功后cd Debug
+2. regsvr32 GDIPlusPlot.ocx

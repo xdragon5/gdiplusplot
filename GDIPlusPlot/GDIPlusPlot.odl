@@ -1,0 +1,82 @@
+// GDIPlusPlot.odl : type library source for ActiveX Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (GDIPlusPlot.tlb) that will become a resource in
+// GDIPlusPlot.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(38FA7518-E1AC-4EC2-AAEF-8A7A7F567BE7), version(1.0),
+  helpfile("GDIPlusPlot.hlp"),
+  helpstring("GDIPlusPlot ActiveX Control module"),
+  control ]
+library GDIPLUSPLOTLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CGDIPlusPlotCtrl
+
+	[ uuid(6BB19A9A-04F5-42DE-9495-ECC319D49E81),
+	  helpstring("Dispatch interface for GDIPlusPlot Control"), hidden ]
+	dispinterface _DGDIPlusPlot
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CGDIPlusPlotCtrl)
+			[id(1)] BSTR caption;
+			[id(2)] boolean xTime;
+			[id(3)] BSTR xLabel;
+			[id(4)] BSTR yLabel;
+			[id(5)] short interval;
+			[id(6)] BSTR annolabel;
+			[id(7)] boolean xTrack;
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CGDIPlusPlotCtrl)
+			[id(8)] void PlotXY(double xValue, double yValue, short index);
+			[id(9)] void SetRange(double xMin, double xMax, double yMin, double yMax);
+			[id(10)] void PlotY(double newValue, short index);
+			[id(11)] void ClearGraph();
+			[id(12)] void AddElement(short color);
+			[id(13)] void IsElementVisible(short index, boolean visible);
+			[id(14)] void SetXCursorPos(double xValue);
+			[id(15)] double GetQuadrantWidth();
+			//}}AFX_ODL_METHOD
+	};
+
+	//  Event dispatch interface for CGDIPlusPlotCtrl
+
+	[ uuid(D60098A8-5B4E-4B86-911A-F2C6B5411CB3),
+	  helpstring("Event interface for GDIPlusPlot Control") ]
+	dispinterface _DGDIPlusPlotEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CGDIPlusPlotCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CGDIPlusPlotCtrl
+
+	[ uuid(DCD24674-D4A1-4ECE-B6A0-D854DB5AD692),
+	  helpstring("GDIPlusPlot Control"), control ]
+	coclass GDIPlusPlot
+	{
+		[default] dispinterface _DGDIPlusPlot;
+		[default, source] dispinterface _DGDIPlusPlotEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};
