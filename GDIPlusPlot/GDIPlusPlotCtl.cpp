@@ -52,7 +52,6 @@ static char THIS_FILE[] = __FILE__;
 #define X_UNIT_ONE 10
 #define Y_UNIT_ONE 5
 #define BUFFER_SIZE 1024
-#define CURVE_POINTS_SIZE 1024
 #define X_CURSOR_STEP 20
 #define MAX_RANGE_Y 40
 #define MIN_RANGE_Y 10
@@ -289,19 +288,32 @@ int CGDIPlusPlotCtrl::m_GetPointY(int PointX, std::vector<point_t> pointList)
 
 void CGDIPlusPlotCtrl::m_DrawCurve(short index) 
 {
-    Gdiplus::Point                  curvePoints[CURVE_POINTS_SIZE];
+    int                                 pointSize = 0;
+    Gdiplus::Point*                     curvePoints = NULL;
 	std::vector<element_t>::iterator	elementIter;
-	std::vector<point_t>::iterator    pointIter;
-    Gdiplus::FontFamily		        fontFamily(L"Courier New");
-	Gdiplus::Font			        font(&fontFamily, SCALE_SIZE, Gdiplus::FontStyleRegular, 
-                                        Gdiplus::UnitPixel);
-    Gdiplus::StringFormat	        format;
-	Gdiplus::SolidBrush		        solidBrush(WHITE_RGB);
-    wchar_t                         xTrack[BUFFER_SIZE];
-	unsigned int					i, j;
+	std::vector<point_t>::iterator      pointIter;
+    Gdiplus::FontFamily		            fontFamily(L"Courier New");
+	Gdiplus::Font			            font(&fontFamily, 
+                                             SCALE_SIZE, 
+                                             Gdiplus::FontStyleRegular, 
+                                             Gdiplus::UnitPixel);
+    Gdiplus::StringFormat	            format;
+	Gdiplus::SolidBrush		            solidBrush(WHITE_RGB);
+    wchar_t                             xTrack[BUFFER_SIZE];
+	unsigned int					    i, j;
 	
     format.SetAlignment(Gdiplus::StringAlignmentNear);
 
+    for (elementIter = m_ElementList.begin(); elementIter != m_ElementList.end(); elementIter++) 
+    {
+        if (index == (*elementIter).index && (*elementIter).visible) 
+        {
+            pointSize = pointSize < (*elementIter).pointList.size() ? 
+                        (*elementIter).pointList.size() : pointSize;
+        }
+    }
+
+    curvePoints = new Gdiplus::Point[pointSize];
 	for (elementIter = m_ElementList.begin(), j = 0; 
             elementIter != m_ElementList.end(); elementIter++, j++) 
 	{
@@ -311,7 +323,7 @@ void CGDIPlusPlotCtrl::m_DrawCurve(short index)
 			Gdiplus::Pen pen((*elementIter).color);
 
 			// Cleanup curve points array
-			memset(curvePoints, 0, CURVE_POINTS_SIZE);
+			memset(curvePoints, 0, pointSize);
 			for (pointIter = (*elementIter).pointList.begin(), i = 0; 
 				pointIter != (*elementIter).pointList.end(); pointIter++, i++) 
 			{
@@ -341,6 +353,12 @@ void CGDIPlusPlotCtrl::m_DrawCurve(short index)
 			break;
 		}
 	}
+    // Mr. Cleanup
+    if (curvePoints) 
+    {
+        delete [] curvePoints;
+        curvePoints = NULL;
+    }
 }
 
 void CGDIPlusPlotCtrl::m_DrawPlotXY() 
