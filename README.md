@@ -1,7 +1,9 @@
 gdiplusplot
 ===========
 
-GdiPlus Plot
+GDI+ Plot ActiveX Control http://www.codeproject.com/Articles/38272/GDI-Plot-ActiveX-Control
+
+![ScreenShot](http://www.codeproject.com/KB/GDI-plus/gdiplusplot/HelloWorld.png)
 
 Setting VC6 project directory 
 =============================
